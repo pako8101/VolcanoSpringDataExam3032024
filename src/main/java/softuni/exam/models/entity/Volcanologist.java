@@ -18,7 +18,7 @@ public class Volcanologist extends BaseEntity {
     @Column(name = "exploring_from", nullable = false)
     private LocalDate exploringFrom;
     @ManyToOne
-    @JoinColumn(name = "volcano_id", referencedColumnName = "id")
+   // @JoinColumn(name = "volcano_id", referencedColumnName = "id")
     private Volcano exploringVolcano;
 
     public Volcanologist() {

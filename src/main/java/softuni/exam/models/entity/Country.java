@@ -1,9 +1,6 @@
 package softuni.exam.models.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Set;
 
 @Entity
@@ -14,7 +11,7 @@ public class Country extends BaseEntity{
     private String name;
     @Column(nullable = false)
      private String capital;
-  @OneToMany(mappedBy = "country")
+  @OneToMany(mappedBy = "country",fetch = FetchType.EAGER)
 //@OneToMany
     private Set<Volcano> volcanoes;
 

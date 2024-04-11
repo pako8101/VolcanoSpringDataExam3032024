@@ -5,6 +5,7 @@ import softuni.exam.models.enums.VolcanoType;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -22,11 +23,11 @@ public class Volcano extends BaseEntity {
     @Column(name = "last_eruption")
     private LocalDate lastEruption;
     @ManyToOne
-    @NotNull
-    @JoinColumn(name = "country_id", referencedColumnName = "id")
+
+    @JoinColumn(name = "country_id")
     private Country country;
-    @OneToMany(mappedBy = "exploringVolcano")
-    private Set<Volcanologist> volcanologists;
+    @OneToMany(mappedBy = "exploringVolcano",fetch = FetchType.EAGER)
+    private Set<Volcanologist> volcanologists = new HashSet<>();
 
     public Set<Volcanologist> getVolcanologists() {
         return volcanologists;

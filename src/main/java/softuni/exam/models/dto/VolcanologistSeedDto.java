@@ -17,9 +17,11 @@ import java.time.LocalDate;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class VolcanologistSeedDto implements Serializable {
     @XmlElement(name = "first_name")
+    @NotNull
     @Size(min = 2, max = 30)
     private String firstName;
     @XmlElement(name = "last_name")
+    @NotNull
     @Size(min = 2, max = 30)
     private String lastName;
     @XmlElement

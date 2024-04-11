@@ -24,8 +24,7 @@ public class VolcanoesSeedDto implements Serializable {
     @Expose
     private String volcanoType;
     @Expose
-    @NotNull
-    @JsonDeserialize(using = NumberDeserializers.BooleanDeserializer.class)
+//    @JsonDeserialize(using = NumberDeserializers.BooleanDeserializer.class)
     private boolean isActive;
     @Expose
     private String lastEruption;

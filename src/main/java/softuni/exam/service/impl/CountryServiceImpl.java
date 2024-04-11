@@ -2,6 +2,7 @@ package softuni.exam.service.impl;
 
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import softuni.exam.models.dto.CountrySeedDto;
 import softuni.exam.models.entity.Country;
@@ -22,8 +23,9 @@ public class CountryServiceImpl implements CountryService {
     private final ValidationUtil validationUtil;
     private final Gson gson;
     private final  static  String PATH ="src/main/resources/files/json/countries.json";
-
-    public CountryServiceImpl(CountryRepository countryRepository, ModelMapper modelMapper, ValidationUtil validationUtil, Gson gson) {
+@Autowired
+    public CountryServiceImpl(CountryRepository countryRepository, ModelMapper modelMapper,
+                              ValidationUtil validationUtil, Gson gson) {
         this.countryRepository = countryRepository;
         this.modelMapper = modelMapper;
         this.validationUtil = validationUtil;
@@ -60,7 +62,17 @@ public class CountryServiceImpl implements CountryService {
 
 
 
-        return sb.toString();
+        return sb.toString().trim();
+    }
+
+    @Override
+    public void saveAddedVolcanoInCountry(Country country) {
+        countryRepository.save(country);
+    }
+
+    @Override
+    public Optional<Country> getCountryById(Long countryId) {
+        return countryRepository.findById(countryId);
     }
 
 }

@@ -3,6 +3,7 @@ package softuni.exam.service.impl;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import softuni.exam.models.dto.VolcanologistSeedRootDto;
+import softuni.exam.models.entity.Volcano;
 import softuni.exam.models.entity.Volcanologist;
 import softuni.exam.repository.VolcanoRepository;
 import softuni.exam.repository.VolcanologistRepository;
@@ -56,14 +57,20 @@ public class VolcanologistServiceImpl implements VolcanologistService {
                 .stream()
                 .filter(volcanologistSeedDto -> {
                     boolean isValid = validationUtil.isValid(volcanologistSeedDto);
+                    Volcano volcano = volcanoService.findVolcanoById(volcanologistSeedDto.getExploringVolcano());
 
-                  Optional<Volcanologist> optVolcanologist = volcanologistRepository
-                            .findByFirstNameAndLastName(volcanologistSeedDto.getFirstName(),volcanologistSeedDto.getLastName());
-                    if (optVolcanologist.isPresent()){
+                    if (volcano==null){
                         isValid=false;
                     }
 
-                    sb.append(isValid ? String.format(String.format("Successfully imported volcanologist %s %s\n",
+                 Volcanologist optVolcanologist = volcanologistRepository
+                            .findByFirstNameAndLastName(volcanologistSeedDto.getFirstName()
+                                    ,volcanologistSeedDto.getLastName()).orElse(null);
+                    if (optVolcanologist != null){
+                        isValid=false;
+                    }
+
+                    sb.append(isValid ? String.format(String.format("Successfully imported volcanologist %s %s",
                    volcanologistSeedDto.getFirstName(),volcanologistSeedDto.getLastName()))
                                     : "Invalid volcanologist")
                             .append(System.lineSeparator());
@@ -72,6 +79,10 @@ public class VolcanologistServiceImpl implements VolcanologistService {
                 })
                 .map(volcanologistSeedDto -> {
                     Volcanologist volcanologist = modelMapper.map(volcanologistSeedDto, Volcanologist.class);
+                    Volcano volcano = volcanoService.findVolcanoById(volcanologistSeedDto
+                            .getExploringVolcano());
+                    volcanoService.addAndSaveAddedVolcano(volcano,volcanologist);
+
                     volcanologist.setExploringVolcano(volcanoService.findVolcanoById(volcanologistSeedDto.getExploringVolcano()));
 
                     return volcanologist;
